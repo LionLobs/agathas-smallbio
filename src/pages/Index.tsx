@@ -150,9 +150,9 @@ const Index = () => {
         ref={heroRef}
         className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-20"
       >
-        {/* === Wolf LEFT — z-30 frente da foto, cobre bordas === */}
+        {/* === Wolf LEFT — atrás da foto === */}
         <motion.div
-          className="absolute top-0 left-0 w-[62%] h-full pointer-events-none z-30"
+          className="absolute top-0 left-0 w-[60%] h-full pointer-events-none z-10"
           style={{ x: wolfParallaxLeft }}
         >
           <img
@@ -160,25 +160,20 @@ const Index = () => {
             alt=""
             className="w-full h-full object-cover object-right"
             style={{
-              opacity: 0.78,
-              filter: "drop-shadow(0 0 60px hsl(42 55% 28% / 0.5)) brightness(0.85) contrast(1.15) sepia(0.15)",
-              maskImage: "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              opacity: 0.6,
+              filter: "brightness(0.88) contrast(1.1) sepia(0.1)",
+              maskImage: "linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               maskComposite: "intersect",
-              WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               WebkitMaskComposite: "source-in",
             }}
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse at 5% 55%, transparent 35%, hsl(0 0% 3% / 0.4) 65%, hsl(0 0% 3% / 0.85) 100%)",
-            }}
-          />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 15% 50%, transparent 30%, hsl(0 0% 3% / 0.45) 65%, hsl(0 0% 3% / 0.9) 100%)" }} />
         </motion.div>
 
-        {/* === Wolf RIGHT — z-30 frente da foto, cobre bordas === */}
+        {/* === Wolf RIGHT — atrás da foto === */}
         <motion.div
-          className="absolute top-0 right-0 w-[62%] h-full pointer-events-none z-30"
+          className="absolute top-0 right-0 w-[60%] h-full pointer-events-none z-10"
           style={{ x: wolfParallaxRight }}
         >
           <img
@@ -186,20 +181,15 @@ const Index = () => {
             alt=""
             className="w-full h-full object-cover object-left"
             style={{
-              opacity: 0.78,
-              filter: "drop-shadow(0 0 60px hsl(42 55% 28% / 0.5)) brightness(0.85) contrast(1.15) sepia(0.15)",
-              maskImage: "linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              opacity: 0.6,
+              filter: "brightness(0.88) contrast(1.1) sepia(0.1)",
+              maskImage: "linear-gradient(to left, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               maskComposite: "intersect",
-              WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               WebkitMaskComposite: "source-in",
             }}
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse at 95% 55%, transparent 35%, hsl(0 0% 3% / 0.4) 65%, hsl(0 0% 3% / 0.85) 100%)",
-            }}
-          />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 85% 50%, transparent 30%, hsl(0 0% 3% / 0.45) 65%, hsl(0 0% 3% / 0.9) 100%)" }} />
         </motion.div>
 
         {/* Lion silhouette — centered atmospheric bg */}
