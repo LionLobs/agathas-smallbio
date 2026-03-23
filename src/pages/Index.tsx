@@ -1,10 +1,12 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import agathaCutout from "@/assets/agatha-cutout.png";
 import goldLeaves from "@/assets/gold-leaves-1.png";
 import goldLeafSingle from "@/assets/gold-leaf-single.png";
 import wolfBgLeft from "@/assets/wolf-bg-left.png";
 import wolfBgRight from "@/assets/wolf-bg-right.png";
 import lionSilhouette from "@/assets/lion-silhouette.png";
+import lionlobsLogo from "@/assets/lionlobs-logo.png";
 import { MessageCircle, Globe, Instagram, Link2, ArrowUpRight } from "lucide-react";
 
 const links = [
@@ -43,181 +45,337 @@ const values = [
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30, filter: "blur(4px)" },
+  hidden: { opacity: 0, y: 40, filter: "blur(6px)" },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { delay: i * 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 
-const GoldSparkle = ({ className, size = 2 }: { className?: string; size?: number }) => (
+// --- Sparkle particle ---
+const GoldSparkle = ({
+  className,
+  size = 2,
+  delay = 0,
+}: {
+  className?: string;
+  size?: number;
+  delay?: number;
+}) => (
   <motion.div
     className={`absolute rounded-full pointer-events-none ${className}`}
     style={{
       width: size,
       height: size,
-      background: "radial-gradient(circle, hsl(45 95% 70%), hsl(42 85% 52% / 0.5), transparent)",
-      boxShadow: `0 0 ${size * 4}px hsl(42 85% 52% / 0.6)`,
+      background: `radial-gradient(circle, hsl(45 98% 78%), hsl(42 85% 55% / 0.7), transparent)`,
+      boxShadow: `0 0 ${size * 5}px hsl(42 85% 52% / 0.8), 0 0 ${size * 10}px hsl(42 72% 45% / 0.4)`,
     }}
-    animate={{
-      opacity: [0, 1, 0.4, 1, 0],
-      scale: [0, 1.8, 1, 1.8, 0],
-    }}
-    transition={{
-      duration: 3.5,
-      repeat: Infinity,
-      repeatDelay: Math.random() * 3,
+    animate={{ opacity: [0, 1, 0.5, 1, 0], scale: [0, 2, 1, 2, 0] }}
+    transition={{ duration: 3.5 + delay, repeat: Infinity, repeatDelay: 1 + delay, delay }}
+  />
+);
+
+// --- Ornamental divider ---
+const GoldDivider = ({ className = "" }: { className?: string }) => (
+  <div className={`flex items-center gap-3 ${className}`}>
+    <div className="flex-1 h-px bg-gold-gradient animate-shimmer" style={{ backgroundSize: "300% auto" }} />
+    <div className="flex items-center gap-1.5">
+      <span className="text-primary text-xs opacity-60">◆</span>
+      <span className="text-primary text-base opacity-90">◈</span>
+      <span className="text-primary text-xs opacity-60">◆</span>
+    </div>
+    <div className="flex-1 h-px bg-gold-gradient animate-shimmer" style={{ backgroundSize: "300% auto" }} />
+  </div>
+);
+
+// --- Rotating ring ornament ---
+const OrnamentialRing = ({
+  size,
+  opacity,
+  className,
+  reverse = false,
+}: {
+  size: number;
+  opacity: number;
+  className?: string;
+  reverse?: boolean;
+}) => (
+  <div
+    className={`absolute rounded-full pointer-events-none border ${reverse ? "animate-rotate-reverse" : "animate-rotate-slow"} ${className}`}
+    style={{
+      width: size,
+      height: size,
+      opacity,
+      borderColor: `hsl(42 72% 52% / 0.25)`,
+      boxShadow: `0 0 ${size * 0.08}px hsl(42 72% 52% / 0.12)`,
     }}
   />
 );
 
 const Index = () => {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const wolfParallaxLeft = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  const wolfParallaxRight = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
+  const profileParallax = useTransform(scrollYProgress, [0, 1], ["0px", "60px"]);
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden relative">
 
-      {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-end overflow-hidden pb-16">
+      {/* === TOP LOGO HEADER === */}
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center py-4"
+        style={{
+          background: "linear-gradient(to bottom, hsl(0 0% 3% / 0.95), transparent)",
+        }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.3 }}
+      >
+        <div className="flex items-center gap-3">
+          <img
+            src={lionlobsLogo}
+            alt="LionLobs"
+            className="w-10 h-10 object-contain"
+            style={{ filter: "drop-shadow(0 0 8px hsl(42 72% 52% / 0.5))" }}
+          />
+          <div className="h-4 w-px" style={{ background: "hsl(42 55% 35% / 0.6)" }} />
+          <span className="font-elegant text-sm tracking-[0.35em] uppercase text-muted-foreground font-light">
+            Agência LionLobs
+          </span>
+        </div>
+      </motion.header>
 
-        {/* Wolf background - LEFT */}
-        <div className="absolute top-0 left-0 w-[55%] h-full pointer-events-none">
+      {/* ===== HERO SECTION ===== */}
+      <section
+        ref={heroRef}
+        className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-20"
+      >
+        {/* === Wolf LEFT — high visibility, soft bleed === */}
+        <motion.div
+          className="absolute top-0 left-0 w-[60%] h-full pointer-events-none"
+          style={{ x: wolfParallaxLeft }}
+        >
           <img
             src={wolfBgLeft}
             alt=""
-            className="w-full h-full object-cover object-right opacity-25"
-            style={{ filter: "drop-shadow(0 0 60px hsl(42 60% 30% / 0.2))" }}
+            className="w-full h-full object-cover object-right"
+            style={{
+              opacity: 0.55,
+              filter: "drop-shadow(0 0 80px hsl(42 60% 30% / 0.4)) brightness(0.9) contrast(1.1)",
+              maskImage: "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.9) 70%, transparent 100%)",
+              maskComposite: "intersect",
+              WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.9) 70%, transparent 100%)",
+              WebkitMaskComposite: "source-in",
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/60" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-transparent" />
-        </div>
+          {/* Dramatic edge vignette */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse at 20% 50%, transparent 30%, hsl(0 0% 3% / 0.5) 70%, hsl(0 0% 3%) 100%)",
+            }}
+          />
+        </motion.div>
 
-        {/* Wolf background - RIGHT */}
-        <div className="absolute top-0 right-0 w-[55%] h-full pointer-events-none">
+        {/* === Wolf RIGHT — high visibility, soft bleed === */}
+        <motion.div
+          className="absolute top-0 right-0 w-[60%] h-full pointer-events-none"
+          style={{ x: wolfParallaxRight }}
+        >
           <img
             src={wolfBgRight}
             alt=""
-            className="w-full h-full object-cover object-left opacity-25"
-            style={{ filter: "drop-shadow(0 0 60px hsl(42 60% 30% / 0.2))" }}
+            className="w-full h-full object-cover object-left"
+            style={{
+              opacity: 0.55,
+              filter: "drop-shadow(0 0 80px hsl(42 60% 30% / 0.4)) brightness(0.9) contrast(1.1)",
+              maskImage: "linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.9) 70%, transparent 100%)",
+              maskComposite: "intersect",
+              WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.9) 70%, transparent 100%)",
+              WebkitMaskComposite: "source-in",
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-background" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/60" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-transparent to-transparent" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse at 80% 50%, transparent 30%, hsl(0 0% 3% / 0.5) 70%, hsl(0 0% 3%) 100%)",
+            }}
+          />
+        </motion.div>
+
+        {/* Lion silhouette — centered atmospheric bg */}
+        <div
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          style={{ top: "5%", opacity: 0.07 }}
+        >
+          <motion.img
+            src={lionSilhouette}
+            alt=""
+            className="w-[70%] max-w-[500px] object-contain animate-breathe"
+            style={{
+              filter: "sepia(1) saturate(2) hue-rotate(10deg) brightness(0.7)",
+            }}
+          />
         </div>
 
-        {/* Ambient gold glow behind profile */}
+        {/* === DECORATIVE RINGS === */}
+        <OrnamentialRing size={520} opacity={0.12} className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-[55%]" />
+        <OrnamentialRing size={380} opacity={0.18} className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-[55%]" reverse />
+        <OrnamentialRing size={260} opacity={0.1} className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-[55%]" />
+
+        {/* Ambient radial glow — center */}
         <div
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none animate-pulse-gold"
+          className="absolute top-[28%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none animate-pulse-gold"
           style={{
-            background: "radial-gradient(circle, hsl(42 85% 52% / 0.08), transparent 70%)",
+            background: "radial-gradient(circle, hsl(42 85% 52% / 0.1), hsl(38 80% 38% / 0.05) 50%, transparent 70%)",
           }}
         />
 
-        {/* Gold leaves decoration */}
+        {/* === GOLD LEAVES — floating === */}
         <motion.img
           src={goldLeaves}
           alt=""
-          className="absolute -top-4 -left-6 w-44 md:w-56 pointer-events-none z-10 animate-float"
-          style={{ filter: "drop-shadow(0 0 20px hsl(42 85% 52% / 0.4))", opacity: 0.9 }}
-          initial={{ opacity: 0, rotate: -25 }}
-          animate={{ opacity: 0.9, rotate: -15 }}
-          transition={{ duration: 1.2 }}
+          className="absolute -top-6 -left-8 w-52 md:w-64 pointer-events-none z-10 animate-float"
+          style={{ filter: "drop-shadow(0 0 25px hsl(42 85% 52% / 0.55))", opacity: 0.95 }}
+          initial={{ opacity: 0, rotate: -30 }}
+          animate={{ opacity: 0.95, rotate: -18 }}
+          transition={{ duration: 1.5 }}
         />
         <motion.img
           src={goldLeafSingle}
           alt=""
-          className="absolute top-16 -right-2 w-28 md:w-36 pointer-events-none z-10"
-          style={{ filter: "drop-shadow(0 0 15px hsl(42 85% 52% / 0.35))", opacity: 0.8 }}
-          initial={{ opacity: 0, rotate: 35 }}
-          animate={{ opacity: 0.8, rotate: 25 }}
-          transition={{ duration: 1.2, delay: 0.3 }}
+          className="absolute top-12 -right-3 w-32 md:w-40 pointer-events-none z-10 animate-float float-delay-1"
+          style={{ filter: "drop-shadow(0 0 18px hsl(42 85% 52% / 0.5))", opacity: 0.88 }}
+          initial={{ opacity: 0, rotate: 40 }}
+          animate={{ opacity: 0.88, rotate: 28 }}
+          transition={{ duration: 1.5, delay: 0.3 }}
         />
         <motion.img
           src={goldLeafSingle}
           alt=""
-          className="absolute top-[38%] -left-1 w-20 pointer-events-none z-10"
-          style={{ filter: "drop-shadow(0 0 12px hsl(42 85% 52% / 0.3))", opacity: 0.6 }}
+          className="absolute top-[35%] -left-2 w-24 pointer-events-none z-10 animate-float float-delay-2"
+          style={{ filter: "drop-shadow(0 0 14px hsl(42 85% 52% / 0.4))", opacity: 0.7 }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ duration: 1.2, delay: 0.6 }}
+        />
+        <motion.img
+          src={goldLeaves}
+          alt=""
+          className="absolute bottom-10 -right-8 w-44 pointer-events-none z-10 animate-float float-delay-3"
+          style={{
+            filter: "drop-shadow(0 0 20px hsl(42 85% 52% / 0.4))",
+            opacity: 0.5,
+            transform: "scaleX(-1) rotate(160deg)",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          transition={{ duration: 1.5, delay: 0.8 }}
         />
 
-        {/* Gold sparkles */}
-        <GoldSparkle className="top-[12%] left-[18%]" size={4} />
-        <GoldSparkle className="top-[22%] right-[12%]" size={3} />
-        <GoldSparkle className="top-[38%] left-[32%]" size={2} />
-        <GoldSparkle className="top-[8%] right-[28%]" size={5} />
-        <GoldSparkle className="top-[52%] left-[12%]" size={3} />
-        <GoldSparkle className="top-[30%] right-[38%]" size={2} />
-        <GoldSparkle className="top-[18%] left-[58%]" size={4} />
-        <GoldSparkle className="top-[48%] right-[22%]" size={3} />
-        <GoldSparkle className="top-[65%] left-[25%]" size={2} />
-        <GoldSparkle className="top-[42%] left-[48%]" size={3} />
-        <GoldSparkle className="top-[15%] left-[42%]" size={2} />
-        <GoldSparkle className="top-[58%] right-[35%]" size={4} />
+        {/* === SPARKLES — more and larger === */}
+        <GoldSparkle className="top-[10%] left-[15%]" size={5} delay={0} />
+        <GoldSparkle className="top-[20%] right-[10%]" size={4} delay={0.5} />
+        <GoldSparkle className="top-[35%] left-[28%]" size={3} delay={1} />
+        <GoldSparkle className="top-[6%] right-[25%]" size={6} delay={0.3} />
+        <GoldSparkle className="top-[48%] left-[10%]" size={4} delay={1.5} />
+        <GoldSparkle className="top-[28%] right-[35%]" size={3} delay={0.8} />
+        <GoldSparkle className="top-[16%] left-[55%]" size={5} delay={1.2} />
+        <GoldSparkle className="top-[45%] right-[18%]" size={4} delay={0.2} />
+        <GoldSparkle className="top-[62%] left-[22%]" size={3} delay={1.8} />
+        <GoldSparkle className="top-[40%] left-[45%]" size={4} delay={0.6} />
+        <GoldSparkle className="top-[13%] left-[38%]" size={3} delay={1.4} />
+        <GoldSparkle className="top-[55%] right-[30%]" size={5} delay={0.9} />
+        <GoldSparkle className="top-[72%] right-[12%]" size={3} delay={2} />
+        <GoldSparkle className="top-[8%] left-[48%]" size={4} delay={0.4} />
 
-        {/* Profile Photo */}
+        {/* === PROFILE PHOTO — sem corte seco === */}
         <motion.div
           className="relative z-20"
-          initial={{ opacity: 0, scale: 0.85, y: 30 }}
+          style={{ y: profileParallax }}
+          initial={{ opacity: 0, scale: 0.88, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
         >
+          {/* Outer golden halo */}
           <div
-            className="absolute -inset-8 rounded-full pointer-events-none"
+            className="absolute -inset-16 rounded-full pointer-events-none animate-pulse-gold"
             style={{
-              background: "radial-gradient(circle, hsl(42 85% 52% / 0.12), transparent 70%)",
+              background: "radial-gradient(circle, hsl(42 85% 52% / 0.15), hsl(42 72% 45% / 0.08) 50%, transparent 70%)",
+            }}
+          />
+          {/* Inner aura */}
+          <div
+            className="absolute -inset-6 rounded-full pointer-events-none"
+            style={{
+              background: "radial-gradient(circle, hsl(42 85% 52% / 0.1), transparent 65%)",
             }}
           />
           <div className="relative">
             <img
               src={agathaCutout}
               alt="Agatha Scudero"
-              className="w-80 md:w-[26rem] h-auto object-contain"
+              className="w-[22rem] md:w-[30rem] lg:w-[34rem] h-auto object-contain"
               style={{
-                filter: "drop-shadow(0 0 50px hsl(42 72% 45% / 0.35)) drop-shadow(0 20px 40px rgba(0,0,0,0.6))",
+                filter:
+                  "drop-shadow(0 0 60px hsl(42 72% 45% / 0.45)) drop-shadow(0 30px 60px rgba(0,0,0,0.7))",
+                // Soft bleed — remove hard cutout effect with multi-directional fade
+                maskImage:
+                  "radial-gradient(ellipse 85% 92% at 50% 48%, black 40%, black 60%, rgba(0,0,0,0.85) 72%, rgba(0,0,0,0.5) 82%, transparent 100%)",
+                WebkitMaskImage:
+                  "radial-gradient(ellipse 85% 92% at 50% 48%, black 40%, black 60%, rgba(0,0,0,0.85) 72%, rgba(0,0,0,0.5) 82%, transparent 100%)",
               }}
             />
+            {/* Bottom fade into floor */}
             <div
-              className="absolute bottom-0 left-0 right-0 h-[50%] pointer-events-none"
+              className="absolute bottom-0 left-0 right-0 h-[55%] pointer-events-none"
               style={{
-                background: "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.95) 20%, hsl(0 0% 3% / 0.7) 45%, hsl(0 0% 3% / 0.3) 70%, transparent 100%)",
+                background:
+                  "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.98) 12%, hsl(0 0% 3% / 0.8) 35%, hsl(0 0% 3% / 0.4) 60%, transparent 100%)",
               }}
             />
           </div>
         </motion.div>
 
-        {/* Name */}
+        {/* === NAME === */}
         <motion.div
-          className="relative z-20 text-center mt-10"
-          initial={{ opacity: 0, y: 25 }}
+          className="relative z-20 text-center mt-6 px-6"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-muted-foreground text-sm md:text-base tracking-[0.5em] uppercase mb-4 font-sans font-light">
+          <p className="font-elegant text-muted-foreground text-sm md:text-base tracking-[0.6em] uppercase mb-3 font-light italic">
             Prazer, &nbsp; me chamo
           </p>
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95]">
-            <span className="text-gold-gradient">Agatha Scudero</span>
+          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.9]">
+            <span className="text-gold-shimmer text-glow-gold">Agatha Scudero</span>
           </h1>
+          <p className="font-elegant text-muted-foreground text-xs tracking-[0.5em] uppercase mt-3 font-light">
+            CEO · Agência LionLobs
+          </p>
         </motion.div>
 
-        {/* Decorative icons row */}
+        {/* Decorative bottom row */}
         <motion.div
-          className="flex items-center gap-4 mt-8 z-20"
+          className="flex items-center gap-3 mt-7 z-20"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
-          transition={{ delay: 0.9 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ delay: 1 }}
         >
-          {["△", "◆", "♡", "◈", "⬟", "⬡", "▣", "◆", "♡", "△"].map((s, i) => (
-            <span key={i} className="text-xs text-primary">{s}</span>
+          {["◇", "◆", "♡", "◈", "⬟", "⬡", "▣", "◈", "♡", "◆", "◇"].map((s, i) => (
+            <span key={i} className="text-[10px] text-primary" style={{ opacity: 0.4 + (i % 3) * 0.2 }}>
+              {s}
+            </span>
           ))}
         </motion.div>
       </section>
 
       {/* ===== BIO TEXT ===== */}
-      <section className="px-8 py-16">
+      <section className="px-8 py-14 relative">
+        <GoldDivider className="max-w-md mx-auto mb-12" />
         <motion.div
           className="max-w-md mx-auto text-center"
           initial="hidden"
@@ -227,20 +385,15 @@ const Index = () => {
           <motion.p
             variants={fadeUp}
             custom={0}
-            className="font-display text-base md:text-lg italic text-foreground leading-relaxed"
+            className="font-elegant text-lg md:text-xl italic text-foreground leading-relaxed"
           >
-            <span className="font-bold text-gold-gradient not-italic text-lg md:text-xl">CEO da Agência LIONLOBS</span>{" "}
+            <span className="font-bold text-gold-shimmer not-italic text-xl md:text-2xl">
+              CEO da Agência LIONLOBS
+            </span>{" "}
             especializada em marketing digital estratégico, onde acreditamos que o poder do design e do marketing pode impulsionar marcas e negócios a novos patamares.
           </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            custom={1}
-            className="flex items-center justify-center gap-4 mt-8"
-          >
-            {["△", "◆", "♡", "◈", "⬟", "⬡", "▣", "◆", "♡", "△"].map((s, i) => (
-              <span key={i} className="text-xs text-primary opacity-50">{s}</span>
-            ))}
+          <motion.div variants={fadeUp} custom={1} className="mt-10">
+            <GoldDivider />
           </motion.div>
         </motion.div>
       </section>
@@ -250,24 +403,39 @@ const Index = () => {
         <motion.div
           className="max-w-md mx-auto rounded-2xl p-8 text-center relative overflow-hidden"
           style={{
-            background: "linear-gradient(145deg, hsl(0 0% 6%), hsl(0 0% 10%))",
-            border: "1px solid hsl(42 35% 22%)",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 hsl(42 40% 25% / 0.2)",
+            background: "linear-gradient(145deg, hsl(0 0% 5%), hsl(0 0% 8%))",
+            border: "1px solid hsl(42 40% 20%)",
+            boxShadow:
+              "0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 hsl(42 50% 30% / 0.2), inset 0 -1px 0 hsl(35 65% 20% / 0.15)",
           }}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <div className="absolute inset-0 opacity-15" style={{
-            background: "radial-gradient(ellipse at 30% 50%, hsl(42 72% 52%), transparent 65%)"
-          }} />
+          {/* Corner accents */}
+          <div className="absolute top-0 left-0 w-8 h-8 pointer-events-none"
+            style={{ borderTop: "1px solid hsl(42 72% 52% / 0.5)", borderLeft: "1px solid hsl(42 72% 52% / 0.5)", borderRadius: "12px 0 0 0" }} />
+          <div className="absolute top-0 right-0 w-8 h-8 pointer-events-none"
+            style={{ borderTop: "1px solid hsl(42 72% 52% / 0.5)", borderRight: "1px solid hsl(42 72% 52% / 0.5)", borderRadius: "0 12px 0 0" }} />
+          <div className="absolute bottom-0 left-0 w-8 h-8 pointer-events-none"
+            style={{ borderBottom: "1px solid hsl(42 72% 52% / 0.5)", borderLeft: "1px solid hsl(42 72% 52% / 0.5)", borderRadius: "0 0 0 12px" }} />
+          <div className="absolute bottom-0 right-0 w-8 h-8 pointer-events-none"
+            style={{ borderBottom: "1px solid hsl(42 72% 52% / 0.5)", borderRight: "1px solid hsl(42 72% 52% / 0.5)", borderRadius: "0 0 12px 0" }} />
+
+          <div
+            className="absolute inset-0 opacity-10 pointer-events-none"
+            style={{ background: "radial-gradient(ellipse at 25% 50%, hsl(42 80% 52%), transparent 60%)" }}
+          />
           <motion.p
             variants={fadeUp}
             custom={0}
-            className="relative font-sans text-base md:text-lg text-muted-foreground leading-relaxed"
+            className="relative font-elegant text-lg md:text-xl text-muted-foreground leading-relaxed italic"
           >
-            Nossa missão é criar <span className="font-bold text-foreground">soluções criativas</span>{" "}
-            que inspirem, engajem e gerem resultados significativos para nossos clientes.
+            Nossa missão é criar{" "}
+            <span className="font-bold text-foreground not-italic">soluções criativas</span>{" "}
+            que inspirem, engajem e gerem{" "}
+            <span className="text-gold-shimmer not-italic font-semibold">resultados significativos</span>{" "}
+            para nossos clientes.
           </motion.p>
         </motion.div>
       </section>
@@ -280,17 +448,17 @@ const Index = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="text-center py-4 relative">
-            <div className="absolute inset-x-0 top-0 h-px bg-gold-gradient animate-shimmer" />
-            <div className="absolute inset-x-0 bottom-0 h-px bg-gold-gradient animate-shimmer" />
-            <p className="text-sm md:text-base tracking-[0.5em] uppercase text-primary font-sans font-semibold">
+          <GoldDivider className="mb-6" />
+          <div className="text-center py-3">
+            <p className="font-elegant text-base md:text-lg tracking-[0.45em] uppercase text-primary font-light italic">
               Clique nos Links
             </p>
           </div>
+          <GoldDivider className="mt-6" />
         </motion.div>
 
         <motion.div
-          className="max-w-md mx-auto space-y-5"
+          className="max-w-md mx-auto space-y-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -303,64 +471,99 @@ const Index = () => {
               rel="noopener noreferrer"
               variants={fadeUp}
               custom={i}
-              className="group relative flex items-center gap-5 p-5 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="group relative flex items-center gap-5 p-5 rounded-2xl overflow-hidden transition-all duration-400 hover:scale-[1.025] active:scale-[0.98]"
               style={{
-                background: "linear-gradient(145deg, hsl(0 0% 8%), hsl(0 0% 12%))",
-                border: "1px solid hsl(42 45% 20%)",
-                boxShadow: "0 6px 24px rgba(0,0,0,0.35), inset 0 1px 0 hsl(42 45% 25% / 0.25)",
+                background: "linear-gradient(145deg, hsl(0 0% 7%), hsl(0 0% 11%))",
+                border: "1px solid hsl(42 40% 18%)",
+                boxShadow:
+                  "0 6px 30px rgba(0,0,0,0.4), inset 0 1px 0 hsl(42 50% 28% / 0.2)",
               }}
             >
-              {/* Hover gold glow */}
+              {/* Gold scan line on hover */}
               <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 overflow-hidden pointer-events-none"
                 style={{
-                  background: "radial-gradient(circle at 15% 50%, hsl(42 72% 52% / 0.12), transparent 65%)",
-                  boxShadow: "0 0 40px hsl(42 72% 52% / 0.2)",
+                  background: "radial-gradient(circle at 15% 50%, hsl(42 72% 52% / 0.14), transparent 60%)",
+                }}
+              />
+              <div
+                className="absolute top-0 bottom-0 w-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                style={{
+                  left: 0,
+                  background: "var(--gold-gradient)",
                 }}
               />
 
-              <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center border border-primary/40 group-hover:border-primary/80 transition-all duration-300 group-hover:gold-glow">
-                <link.icon className="w-5 h-5 text-primary" />
+              {/* Icon ring */}
+              <div
+                className="relative z-10 w-13 h-13 min-w-[52px] min-h-[52px] rounded-full flex items-center justify-center transition-all duration-300"
+                style={{
+                  border: "1px solid hsl(42 55% 30% / 0.6)",
+                  background: "hsl(0 0% 6%)",
+                  boxShadow: "0 0 0 0 hsl(42 72% 52% / 0)",
+                }}
+              >
+                <link.icon
+                  className="w-5 h-5 text-primary transition-all duration-300 group-hover:drop-shadow-[0_0_8px_hsl(42_72%_52%_/_0.8)]"
+                />
               </div>
-              <div className="relative z-10 flex-1">
-                <p className="font-display text-xl md:text-2xl font-bold text-foreground">{link.title}</p>
-                <p className="text-muted-foreground font-sans text-xs mt-0.5">{link.subtitle}</p>
+
+              <div className="relative z-10 flex-1 min-w-0">
+                <p className="font-display text-xl md:text-2xl font-bold text-foreground leading-tight">
+                  {link.title}
+                </p>
+                <p className="text-muted-foreground font-sans text-xs mt-0.5 truncate">
+                  {link.subtitle}
+                </p>
               </div>
-              <ArrowUpRight className="relative z-10 w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
+              <ArrowUpRight className="relative z-10 w-5 h-5 text-muted-foreground group-hover:text-primary transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0" />
             </motion.a>
           ))}
         </motion.div>
       </section>
 
       {/* ===== CTA QUOTE ===== */}
-      <section className="px-6 py-16 text-center">
+      <section className="px-6 py-16 text-center relative overflow-hidden">
+        {/* BG accent */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse at 50% 50%, hsl(42 72% 52% / 0.05), transparent 65%)",
+          }}
+        />
+        <GoldDivider className="max-w-xs mx-auto mb-10" />
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="max-w-md mx-auto"
+          className="max-w-md mx-auto relative z-10"
         >
           <motion.p
             variants={fadeUp}
             custom={0}
-            className="font-display text-xl md:text-2xl italic text-muted-foreground"
+            className="font-elegant text-2xl md:text-3xl italic text-muted-foreground leading-snug"
           >
             Para quem quer parar de tentar
           </motion.p>
           <motion.p
             variants={fadeUp}
             custom={1}
-            className="font-display text-xl md:text-2xl italic text-gold-gradient font-bold mt-1"
+            className="font-display text-2xl md:text-3xl italic text-gold-shimmer font-bold mt-1"
           >
             e começar a construir.
           </motion.p>
         </motion.div>
+        <GoldDivider className="max-w-xs mx-auto mt-10" />
       </section>
 
       {/* ===== VALUES ===== */}
-      <section className="px-8 py-16">
+      <section className="px-8 py-16 relative">
+        {/* Lion watermark */}
+        <div className="absolute right-0 bottom-0 w-64 h-64 opacity-[0.04] pointer-events-none">
+          <img src={lionSilhouette} alt="" className="w-full h-full object-contain" style={{ filter: "sepia(1) saturate(2) hue-rotate(10deg)" }} />
+        </div>
         <motion.div
-          className="max-w-md mx-auto space-y-4"
+          className="max-w-md mx-auto space-y-5"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -370,41 +573,60 @@ const Index = () => {
               key={i}
               variants={fadeUp}
               custom={i}
-              className="font-display text-lg md:text-xl italic text-foreground"
+              className="font-elegant text-xl md:text-2xl italic text-foreground border-l-2 pl-4"
+              style={{ borderColor: `hsl(42 ${50 + i * 5}% ${28 + i * 4}%)` }}
             >
-              <span className="text-gold-gradient font-bold not-italic text-xl md:text-2xl">{v.bold}</span>
+              <span className="text-gold-shimmer font-bold not-italic text-2xl md:text-3xl">{v.bold}</span>
               {v.rest}
             </motion.p>
           ))}
         </motion.div>
       </section>
 
-      {/* ===== LEÃO + LOBO ===== */}
-      <section className="px-6 py-20 relative overflow-hidden">
-        {/* Decorative leaves */}
+      {/* ===== LEÃO + LOBO MANIFESTO ===== */}
+      <section className="px-6 py-24 relative overflow-hidden">
+        {/* Atmospheric bg glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none animate-pulse-gold"
+          style={{ background: "radial-gradient(circle, hsl(42 72% 52% / 0.06), transparent 65%)" }}
+        />
+
         <motion.img
           src={goldLeaves}
           alt=""
-          className="absolute -right-6 bottom-4 w-44 pointer-events-none"
-          style={{ filter: "drop-shadow(0 0 15px hsl(42 85% 52% / 0.3))", opacity: 0.2 }}
-          initial={{ opacity: 0, rotate: 160 }}
-          whileInView={{ opacity: 0.2, rotate: 150 }}
+          className="absolute -right-8 bottom-6 w-48 pointer-events-none"
+          style={{ filter: "drop-shadow(0 0 18px hsl(42 85% 52% / 0.35))", opacity: 0.25 }}
+          initial={{ opacity: 0, rotate: 165 }}
+          whileInView={{ opacity: 0.25, rotate: 155 }}
           viewport={{ once: true }}
         />
         <motion.img
           src={goldLeafSingle}
           alt=""
-          className="absolute -left-3 top-8 w-24 pointer-events-none"
-          style={{ filter: "drop-shadow(0 0 10px hsl(42 85% 52% / 0.25))", opacity: 0.15 }}
+          className="absolute -left-4 top-10 w-28 pointer-events-none"
+          style={{ filter: "drop-shadow(0 0 12px hsl(42 85% 52% / 0.3))", opacity: 0.2 }}
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.15 }}
+          whileInView={{ opacity: 0.2 }}
           viewport={{ once: true }}
         />
 
-        {/* Lion silhouette subtle bg */}
-        <div className="absolute right-0 bottom-0 w-52 h-52 opacity-[0.07] pointer-events-none">
-          <img src={lionSilhouette} alt="" className="w-full h-full object-contain" />
-        </div>
+        {/* Logo badge */}
+        <motion.div
+          className="flex justify-center mb-10"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div
+            className="relative flex items-center justify-center"
+            style={{
+              filter: "drop-shadow(0 0 30px hsl(42 72% 52% / 0.4))",
+            }}
+          >
+            <img src={lionlobsLogo} alt="LionLobs" className="w-24 h-24 object-contain" />
+          </div>
+        </motion.div>
 
         <motion.div
           className="max-w-md mx-auto text-right relative z-10"
@@ -415,14 +637,15 @@ const Index = () => {
           <motion.p
             variants={fadeUp}
             custom={0}
-            className="font-display text-base md:text-lg italic text-foreground leading-[1.9]"
+            className="font-elegant text-lg md:text-xl italic text-foreground leading-[2]"
           >
-            A União do <span className="text-gold-gradient font-bold not-italic text-lg md:text-xl">Leão + Lobo</span> não
-            é apenas um conceito.{" "}
+            A União do{" "}
+            <span className="text-gold-shimmer font-bold not-italic text-xl md:text-2xl">Leão + Lobo</span>{" "}
+            não é apenas um conceito.{" "}
             É uma filosofia de construção de marcas fortes, estruturadas e preparadas{" "}
             <span
-              className="not-italic font-semibold px-2 py-1 rounded-md"
-              style={{ background: "hsl(42 72% 52% / 0.15)", color: "hsl(42 72% 62%)" }}
+              className="not-italic font-semibold px-2 py-0.5 rounded"
+              style={{ background: "hsl(42 72% 52% / 0.12)", color: "hsl(45 85% 65%)" }}
             >
               para trazer posicionamento
             </span>{" "}
@@ -432,11 +655,29 @@ const Index = () => {
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer className="py-10 px-6 border-t border-border text-center">
-        <p className="text-sm text-muted-foreground font-sans tracking-wide italic">
-          Criado por{" "}
-          <span className="text-gold-gradient font-semibold not-italic">Agência LionLobs</span> — 2026
-        </p>
+      <footer className="relative py-12 px-6 text-center overflow-hidden">
+        <div
+          className="absolute inset-x-0 top-0 h-px animate-shimmer"
+          style={{ background: "var(--gold-gradient-horizontal)", backgroundSize: "300% auto" }}
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center gap-4"
+        >
+          <img
+            src={lionlobsLogo}
+            alt="LionLobs"
+            className="w-12 h-12 object-contain opacity-60"
+            style={{ filter: "drop-shadow(0 0 10px hsl(42 72% 52% / 0.4))" }}
+          />
+          <GoldDivider className="w-40" />
+          <p className="text-xs text-muted-foreground font-sans tracking-widest uppercase">
+            Criado por{" "}
+            <span className="text-gold-shimmer font-semibold">Agência LionLobs</span> — 2026
+          </p>
+        </motion.div>
       </footer>
     </div>
   );
