@@ -135,18 +135,14 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
       >
-        <div className="flex items-center gap-3">
-          <img
-            src={lionlobsLogo}
-            alt="LionLobs"
-            className="w-10 h-10 object-contain"
-            style={{ filter: "drop-shadow(0 0 8px hsl(42 72% 52% / 0.5))" }}
-          />
-          <div className="h-4 w-px" style={{ background: "hsl(42 55% 35% / 0.6)" }} />
-          <span className="font-elegant text-sm tracking-[0.35em] uppercase text-muted-foreground font-light">
-            Agência LionLobs
-          </span>
-        </div>
+        <img
+          src={lionlobsLogoFull}
+          alt="Agência LionLobs"
+          className="h-10 md:h-12 w-auto object-contain"
+          style={{
+            filter: "drop-shadow(0 0 12px hsl(42 72% 52% / 0.55)) brightness(1.05)",
+          }}
+        />
       </motion.header>
 
       {/* ===== HERO SECTION ===== */}
