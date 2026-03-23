@@ -312,26 +312,80 @@ const Index = () => {
             }}
           />
           <div className="relative">
+            {/* Glow aura behind the photo */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse 70% 60% at 50% 55%, hsl(42 72% 45% / 0.22) 0%, transparent 70%)",
+                filter: "blur(30px)",
+              }}
+            />
             <img
               src={agathaCutout}
               alt="Agatha Scudero"
-              className="w-[22rem] md:w-[30rem] lg:w-[34rem] h-auto object-contain"
+              className="w-[22rem] md:w-[30rem] lg:w-[36rem] h-auto object-contain relative z-10"
               style={{
                 filter:
-                  "drop-shadow(0 0 60px hsl(42 72% 45% / 0.45)) drop-shadow(0 30px 60px rgba(0,0,0,0.7))",
-                // Soft bleed — remove hard cutout effect with multi-directional fade
-                maskImage:
-                  "radial-gradient(ellipse 85% 92% at 50% 48%, black 40%, black 60%, rgba(0,0,0,0.85) 72%, rgba(0,0,0,0.5) 82%, transparent 100%)",
-                WebkitMaskImage:
-                  "radial-gradient(ellipse 85% 92% at 50% 48%, black 40%, black 60%, rgba(0,0,0,0.85) 72%, rgba(0,0,0,0.5) 82%, transparent 100%)",
+                  "drop-shadow(0 0 70px hsl(42 72% 45% / 0.5)) drop-shadow(0 40px 80px rgba(0,0,0,0.8))",
+                maskImage: `
+                  linear-gradient(to bottom,
+                    transparent 0%,
+                    rgba(0,0,0,0.6) 5%,
+                    black 18%,
+                    black 62%,
+                    rgba(0,0,0,0.7) 78%,
+                    rgba(0,0,0,0.3) 88%,
+                    transparent 100%
+                  ),
+                  linear-gradient(to right,
+                    transparent 0%,
+                    rgba(0,0,0,0.5) 8%,
+                    black 20%,
+                    black 80%,
+                    rgba(0,0,0,0.5) 92%,
+                    transparent 100%
+                  )`,
+                WebkitMaskImage: `
+                  linear-gradient(to bottom,
+                    transparent 0%,
+                    rgba(0,0,0,0.6) 5%,
+                    black 18%,
+                    black 62%,
+                    rgba(0,0,0,0.7) 78%,
+                    rgba(0,0,0,0.3) 88%,
+                    transparent 100%
+                  ),
+                  linear-gradient(to right,
+                    transparent 0%,
+                    rgba(0,0,0,0.5) 8%,
+                    black 20%,
+                    black 80%,
+                    rgba(0,0,0,0.5) 92%,
+                    transparent 100%
+                  )`,
+                maskComposite: "intersect",
+                WebkitMaskComposite: "source-in",
               }}
             />
-            {/* Bottom fade into floor */}
+            {/* Bottom atmospheric fade into the scene */}
             <div
-              className="absolute bottom-0 left-0 right-0 h-[55%] pointer-events-none"
+              className="absolute bottom-0 left-0 right-0 h-[45%] pointer-events-none z-20"
               style={{
                 background:
-                  "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.98) 12%, hsl(0 0% 3% / 0.8) 35%, hsl(0 0% 3% / 0.4) 60%, transparent 100%)",
+                  "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.95) 18%, hsl(0 0% 3% / 0.65) 45%, hsl(0 0% 3% / 0.2) 70%, transparent 100%)",
+              }}
+            />
+            {/* Side atmospheric fades */}
+            <div
+              className="absolute inset-y-0 left-0 w-[18%] pointer-events-none z-20"
+              style={{
+                background: "linear-gradient(to right, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-y-0 right-0 w-[18%] pointer-events-none z-20"
+              style={{
+                background: "linear-gradient(to left, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
               }}
             />
           </div>
