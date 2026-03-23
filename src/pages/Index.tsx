@@ -7,6 +7,7 @@ import wolfBgLeft from "@/assets/wolf-bg-left.png";
 import wolfBgRight from "@/assets/wolf-bg-right.png";
 import lionSilhouette from "@/assets/lion-silhouette.png";
 import lionlobsLogo from "@/assets/lionlobs-logo.png";
+import lionlobsLogoFull from "@/assets/lionlobs-logo-full.png";
 import { MessageCircle, Globe, Instagram, Link2, ArrowUpRight } from "lucide-react";
 
 const links = [
