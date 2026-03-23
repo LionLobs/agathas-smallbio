@@ -314,8 +314,25 @@ const Index = () => {
               alt="Agatha Scudero"
               className="w-[22rem] md:w-[30rem] lg:w-[36rem] h-auto object-contain relative z-10"
               style={{
-                mixBlendMode: "screen",
-                filter: "drop-shadow(0 0 50px hsl(42 72% 45% / 0.6)) brightness(1.05) contrast(1.05)",
+                filter: "drop-shadow(0 0 60px hsl(42 72% 45% / 0.5)) drop-shadow(0 30px 60px rgba(0,0,0,0.6))",
+                maskImage: `radial-gradient(ellipse 78% 88% at 50% 46%,
+                  black 0%,
+                  black 50%,
+                  rgba(0,0,0,0.92) 62%,
+                  rgba(0,0,0,0.75) 72%,
+                  rgba(0,0,0,0.45) 82%,
+                  rgba(0,0,0,0.15) 92%,
+                  transparent 100%
+                )`,
+                WebkitMaskImage: `radial-gradient(ellipse 78% 88% at 50% 46%,
+                  black 0%,
+                  black 50%,
+                  rgba(0,0,0,0.92) 62%,
+                  rgba(0,0,0,0.75) 72%,
+                  rgba(0,0,0,0.45) 82%,
+                  rgba(0,0,0,0.15) 92%,
+                  transparent 100%
+                )`,
               }}
             />
             {/* Bottom atmospheric fade into the scene */}
