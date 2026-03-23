@@ -148,7 +148,7 @@ const Index = () => {
       {/* ===== HERO SECTION ===== */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-20"
+        className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-4"
       >
         {/* === Wolf LEFT — atrás da foto === */}
         <motion.div
@@ -342,7 +342,7 @@ const Index = () => {
 
         {/* === NAME === */}
         <motion.div
-          className="relative z-20 text-center mt-6 px-6"
+          className="relative z-20 text-center mt-0 px-6"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
