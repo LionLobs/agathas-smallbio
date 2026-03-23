@@ -150,9 +150,9 @@ const Index = () => {
         ref={heroRef}
         className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-20"
       >
-        {/* === Wolf LEFT — z-30 frente da foto, cobre bordas === */}
+        {/* === Wolf LEFT — atrás da foto === */}
         <motion.div
-          className="absolute top-0 left-0 w-[62%] h-full pointer-events-none z-30"
+          className="absolute top-0 left-0 w-[60%] h-full pointer-events-none z-10"
           style={{ x: wolfParallaxLeft }}
         >
           <img
@@ -160,25 +160,20 @@ const Index = () => {
             alt=""
             className="w-full h-full object-cover object-right"
             style={{
-              opacity: 0.78,
-              filter: "drop-shadow(0 0 60px hsl(42 55% 28% / 0.5)) brightness(0.85) contrast(1.15) sepia(0.15)",
-              maskImage: "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              opacity: 0.6,
+              filter: "brightness(0.88) contrast(1.1) sepia(0.1)",
+              maskImage: "linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               maskComposite: "intersect",
-              WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               WebkitMaskComposite: "source-in",
             }}
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse at 5% 55%, transparent 35%, hsl(0 0% 3% / 0.4) 65%, hsl(0 0% 3% / 0.85) 100%)",
-            }}
-          />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 15% 50%, transparent 30%, hsl(0 0% 3% / 0.45) 65%, hsl(0 0% 3% / 0.9) 100%)" }} />
         </motion.div>
 
-        {/* === Wolf RIGHT — z-30 frente da foto, cobre bordas === */}
+        {/* === Wolf RIGHT — atrás da foto === */}
         <motion.div
-          className="absolute top-0 right-0 w-[62%] h-full pointer-events-none z-30"
+          className="absolute top-0 right-0 w-[60%] h-full pointer-events-none z-10"
           style={{ x: wolfParallaxRight }}
         >
           <img
@@ -186,20 +181,15 @@ const Index = () => {
             alt=""
             className="w-full h-full object-cover object-left"
             style={{
-              opacity: 0.78,
-              filter: "drop-shadow(0 0 60px hsl(42 55% 28% / 0.5)) brightness(0.85) contrast(1.15) sepia(0.15)",
-              maskImage: "linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              opacity: 0.6,
+              filter: "brightness(0.88) contrast(1.1) sepia(0.1)",
+              maskImage: "linear-gradient(to left, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               maskComposite: "intersect",
-              WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.3) 75%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 8%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0.4) 92%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 72%, transparent 100%)",
               WebkitMaskComposite: "source-in",
             }}
           />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse at 95% 55%, transparent 35%, hsl(0 0% 3% / 0.4) 65%, hsl(0 0% 3% / 0.85) 100%)",
-            }}
-          />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 85% 50%, transparent 30%, hsl(0 0% 3% / 0.45) 65%, hsl(0 0% 3% / 0.9) 100%)" }} />
         </motion.div>
 
         {/* Lion silhouette — centered atmospheric bg */}
@@ -324,29 +314,32 @@ const Index = () => {
               alt="Agatha Scudero"
               className="w-[22rem] md:w-[30rem] lg:w-[36rem] h-auto object-contain relative z-10"
               style={{
-                mixBlendMode: "screen",
-                filter: "drop-shadow(0 0 50px hsl(42 72% 45% / 0.6)) brightness(1.05) contrast(1.05)",
+                filter: "drop-shadow(0 0 60px hsl(42 72% 45% / 0.5)) drop-shadow(0 30px 60px rgba(0,0,0,0.6))",
+                maskImage: `radial-gradient(ellipse 78% 88% at 50% 46%,
+                  black 0%,
+                  black 50%,
+                  rgba(0,0,0,0.92) 62%,
+                  rgba(0,0,0,0.75) 72%,
+                  rgba(0,0,0,0.45) 82%,
+                  rgba(0,0,0,0.15) 92%,
+                  transparent 100%
+                )`,
+                WebkitMaskImage: `radial-gradient(ellipse 78% 88% at 50% 46%,
+                  black 0%,
+                  black 50%,
+                  rgba(0,0,0,0.92) 62%,
+                  rgba(0,0,0,0.75) 72%,
+                  rgba(0,0,0,0.45) 82%,
+                  rgba(0,0,0,0.15) 92%,
+                  transparent 100%
+                )`,
               }}
             />
-            {/* Bottom atmospheric fade into the scene */}
+            {/* Bottom soft fade */}
             <div
-              className="absolute bottom-0 left-0 right-0 h-[45%] pointer-events-none z-20"
+              className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20"
               style={{
-                background:
-                  "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.95) 18%, hsl(0 0% 3% / 0.65) 45%, hsl(0 0% 3% / 0.2) 70%, transparent 100%)",
-              }}
-            />
-            {/* Side atmospheric fades */}
-            <div
-              className="absolute inset-y-0 left-0 w-[18%] pointer-events-none z-20"
-              style={{
-                background: "linear-gradient(to right, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
-              }}
-            />
-            <div
-              className="absolute inset-y-0 right-0 w-[18%] pointer-events-none z-20"
-              style={{
-                background: "linear-gradient(to left, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
+                background: "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
               }}
             />
           </div>
