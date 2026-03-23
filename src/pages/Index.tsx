@@ -335,25 +335,11 @@ const Index = () => {
                 )`,
               }}
             />
-            {/* Bottom atmospheric fade into the scene */}
+            {/* Bottom soft fade */}
             <div
-              className="absolute bottom-0 left-0 right-0 h-[45%] pointer-events-none z-20"
+              className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20"
               style={{
-                background:
-                  "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.95) 18%, hsl(0 0% 3% / 0.65) 45%, hsl(0 0% 3% / 0.2) 70%, transparent 100%)",
-              }}
-            />
-            {/* Side atmospheric fades */}
-            <div
-              className="absolute inset-y-0 left-0 w-[18%] pointer-events-none z-20"
-              style={{
-                background: "linear-gradient(to right, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
-              }}
-            />
-            <div
-              className="absolute inset-y-0 right-0 w-[18%] pointer-events-none z-20"
-              style={{
-                background: "linear-gradient(to left, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
+                background: "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
               }}
             />
           </div>
