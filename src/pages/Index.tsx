@@ -314,32 +314,27 @@ const Index = () => {
               alt="Agatha Scudero"
               className="w-[22rem] md:w-[30rem] lg:w-[36rem] h-auto object-contain relative z-10"
               style={{
-                filter: "drop-shadow(0 0 60px hsl(42 72% 45% / 0.5)) drop-shadow(0 30px 60px rgba(0,0,0,0.6))",
-                maskImage: `radial-gradient(ellipse 78% 88% at 50% 46%,
+                filter: "drop-shadow(0 0 60px hsl(42 72% 45% / 0.5))",
+                maskImage: `linear-gradient(to bottom,
                   black 0%,
-                  black 50%,
-                  rgba(0,0,0,0.92) 62%,
-                  rgba(0,0,0,0.75) 72%,
-                  rgba(0,0,0,0.45) 82%,
-                  rgba(0,0,0,0.15) 92%,
+                  black 45%,
+                  rgba(0,0,0,0.96) 55%,
+                  rgba(0,0,0,0.82) 63%,
+                  rgba(0,0,0,0.55) 72%,
+                  rgba(0,0,0,0.25) 82%,
+                  rgba(0,0,0,0.05) 90%,
                   transparent 100%
                 )`,
-                WebkitMaskImage: `radial-gradient(ellipse 78% 88% at 50% 46%,
+                WebkitMaskImage: `linear-gradient(to bottom,
                   black 0%,
-                  black 50%,
-                  rgba(0,0,0,0.92) 62%,
-                  rgba(0,0,0,0.75) 72%,
-                  rgba(0,0,0,0.45) 82%,
-                  rgba(0,0,0,0.15) 92%,
+                  black 45%,
+                  rgba(0,0,0,0.96) 55%,
+                  rgba(0,0,0,0.82) 63%,
+                  rgba(0,0,0,0.55) 72%,
+                  rgba(0,0,0,0.25) 82%,
+                  rgba(0,0,0,0.05) 90%,
                   transparent 100%
                 )`,
-              }}
-            />
-            {/* Bottom soft fade */}
-            <div
-              className="absolute bottom-0 left-0 right-0 h-[30%] pointer-events-none z-20"
-              style={{
-                background: "linear-gradient(to top, hsl(0 0% 3%) 0%, hsl(0 0% 3% / 0.6) 40%, transparent 100%)",
               }}
             />
           </div>
