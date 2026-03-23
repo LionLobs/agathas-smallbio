@@ -324,46 +324,8 @@ const Index = () => {
               alt="Agatha Scudero"
               className="w-[22rem] md:w-[30rem] lg:w-[36rem] h-auto object-contain relative z-10"
               style={{
-                filter:
-                  "drop-shadow(0 0 70px hsl(42 72% 45% / 0.5)) drop-shadow(0 40px 80px rgba(0,0,0,0.8))",
-                maskImage: `
-                  linear-gradient(to bottom,
-                    transparent 0%,
-                    rgba(0,0,0,0.6) 5%,
-                    black 18%,
-                    black 62%,
-                    rgba(0,0,0,0.7) 78%,
-                    rgba(0,0,0,0.3) 88%,
-                    transparent 100%
-                  ),
-                  linear-gradient(to right,
-                    transparent 0%,
-                    rgba(0,0,0,0.5) 8%,
-                    black 20%,
-                    black 80%,
-                    rgba(0,0,0,0.5) 92%,
-                    transparent 100%
-                  )`,
-                WebkitMaskImage: `
-                  linear-gradient(to bottom,
-                    transparent 0%,
-                    rgba(0,0,0,0.6) 5%,
-                    black 18%,
-                    black 62%,
-                    rgba(0,0,0,0.7) 78%,
-                    rgba(0,0,0,0.3) 88%,
-                    transparent 100%
-                  ),
-                  linear-gradient(to right,
-                    transparent 0%,
-                    rgba(0,0,0,0.5) 8%,
-                    black 20%,
-                    black 80%,
-                    rgba(0,0,0,0.5) 92%,
-                    transparent 100%
-                  )`,
-                maskComposite: "intersect",
-                WebkitMaskComposite: "source-in",
+                mixBlendMode: "screen",
+                filter: "drop-shadow(0 0 50px hsl(42 72% 45% / 0.6)) brightness(1.05) contrast(1.05)",
               }}
             />
             {/* Bottom atmospheric fade into the scene */}
