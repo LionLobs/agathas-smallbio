@@ -8,14 +8,13 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
       fontFamily: {
         display: ['"Playfair Display"', 'serif'],
         sans: ['"Inter"', 'sans-serif'],
+        elegant: ['"Cormorant Garamond"', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -60,6 +59,20 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        gold: {
+          whisper: "hsl(var(--gold-whisper))",
+          light: "hsl(var(--gold-light))",
+          mid: "hsl(var(--gold-mid))",
+          core: "hsl(var(--gold-core))",
+          deep: "hsl(var(--gold-deep))",
+          shadow: "hsl(var(--gold-shadow))",
+        },
+        surface: {
+          1: "hsl(var(--surface-1))",
+          2: "hsl(var(--surface-2))",
+          3: "hsl(var(--surface-3))",
+          4: "hsl(var(--surface-4))",
         },
       },
       borderRadius: {
