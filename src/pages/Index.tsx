@@ -148,7 +148,7 @@ const Index = () => {
       {/* ===== HERO SECTION ===== */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-20"
+        className="relative min-h-screen flex flex-col items-center justify-end overflow-hidden pb-4"
       >
         {/* === Wolf LEFT — atrás da foto === */}
         <motion.div
