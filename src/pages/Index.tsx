@@ -666,17 +666,27 @@ const Index = () => {
           viewport={{ once: true }}
           className="flex flex-col items-center gap-4"
         >
-          <img
-            src={lionlobsLogo}
-            alt="LionLobs"
-            className="w-12 h-12 object-contain opacity-60"
-            style={{ filter: "drop-shadow(0 0 10px hsl(42 72% 52% / 0.4))" }}
-          />
-          <GoldDivider className="w-40" />
-          <p className="text-xs text-muted-foreground font-sans tracking-widest uppercase">
-            Criado por{" "}
-            <span className="text-gold-shimmer font-semibold">Agência LionLobs</span> — 2026
-          </p>
+        <img
+  src={lionlobsLogo}
+  alt="LionLobs"
+  className="w-12 h-12 object-contain opacity-60"
+  style={{ filter: "drop-shadow(0 0 10px hsl(42 72% 52% / 0.4))" }}
+/>
+
+<GoldDivider className="w-40" />
+
+<p className="text-xs text-muted-foreground font-sans tracking-widest uppercase">
+  Criado por{" "}
+  <a
+    href="https://instagram.com/lionlobs"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gold-shimmer font-semibold underline hover:opacity-80 transition"
+  >
+    @lionlobs
+  </a>{" "}
+  — 2026
+</p>
         </motion.div>
       </footer>
     </div>
